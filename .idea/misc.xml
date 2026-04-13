@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="TypeScriptCompiler">
+    <option name="nodeInterpreterTextField" value="$USER_HOME$/AppData/Local/nvs/node/25.7.0/x64/node" />
+  </component>
+</project>
