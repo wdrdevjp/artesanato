@@ -150,12 +150,15 @@ Examples of foundational tasks (adjust based on your project):
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] TXXX [P] Documentation updates in docs/
-- [ ] TXXX Code cleanup and refactoring
-- [ ] TXXX Performance optimization across all stories
-- [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
+Per the Artesanato Constitution, these phases MUST include:
+
+- [ ] TXXX [P] Performance audit (Lighthouse 90+, load ≤ 3s)
+- [ ] TXXX [P] Accessibility audit (WCAG 2.1 AA, axe-core 0 violations)
+- [ ] TXXX Visual regression tests verification
+- [ ] TXXX Bundle size validation (< 250KB gzipped)
+- [ ] TXXX [P] Documentation updates in docs/ (all in Brazilian Portuguese)
+- [ ] TXXX Code cleanup and refactoring (all comments and vars in PT-BR)
 - [ ] TXXX Security hardening
-- [ ] TXXX Run quickstart.md validation
 
 ---
 

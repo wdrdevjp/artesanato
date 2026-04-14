@@ -85,7 +85,7 @@
 ### Functional Requirements
 
 - **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
-- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]  
+- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]
 - **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
 - **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
 - **FR-005**: System MUST [behavior, e.g., "log all security events"]
@@ -94,6 +94,18 @@
 
 - **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
 - **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+
+### Constitution-Derived Requirements
+
+Per the Artesanato Constitution, all features MUST also satisfy:
+
+- **CR-001**: Page load time ≤ 3s (Garantia de Desempenho - Principle II)
+- **CR-002**: Lighthouse performance score ≥ 90 (Garantia de Desempenho - Principle II)
+- **CR-003**: 80%+ test coverage on critical paths (Prontidao para Automacao - Principle III)
+- **CR-004**: All user interactions have automated test coverage (Prontidao para Automacao - Principle III)
+- **CR-005**: Bundle size ≤ 250KB initial load gzipped (Leveza e Deploy - Principle V)
+- **CR-006**: All UI components meet WCAG 2.1 AA accessibility standards
+- **CR-007**: All documentation and code in Brazilian Portuguese, tech terms excepted (Idioma PT-BR - Principle VI)
 
 ### Key Entities *(include if feature involves data)*
 

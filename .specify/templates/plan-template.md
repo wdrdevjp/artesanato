@@ -31,7 +31,14 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+Per the Artesanato Constitution, all plans MUST satisfy:
+
+- **Beleza & UX** (Principle I): Design MUST prioritize visual quality and usability
+- **Desempenho** (Principle II): Page loads ≤ 3s; Lighthouse 90+ for performance
+- **Automacao de Testes** (Principle III): Feature must be testable; 80%+ coverage on critical paths
+- **Codigo Limpo** (Principle IV): Complexity must be justified; technical debt tracked
+- **Deploy Leve** (Principle V): Minimal dependencies; bundle size budget enforced
+- **Idioma PT-BR** (Principle VI): All documentation and code in Brazilian Portuguese (tech terms excepted)
 
 ## Project Structure
 
