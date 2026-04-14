@@ -24,9 +24,7 @@ Criar arquivo `apps/backend/.env`:
 ```env
 DATABASE_URL="postgresql://user:password@localhost:5432/artesanato"
 SESSION_SECRET="your-secret-key-min-32-chars"
-CLOUD_STORAGE_URL="https://your-bucket.s3.amazonaws.com"
-CLOUD_STORAGE_KEY="your-access-key"
-CLOUD_STORAGE_SECRET="your-secret-key"
+UPLOAD_DIR="./uploads"
 PORT=3001
 ```
 
@@ -49,14 +47,38 @@ npm run db:migrate --workspace=apps/backend
 npm run db:seed --workspace=apps/backend
 ```
 
-### 4. Gerar Design System (MCP Stitch)
+### 4. Configurar Tailwind CSS e DaisyUI
 
 ```bash
-# Usar MCP Stitch para gerar componentes de design
-# O Stitch MCP cria o design system baseado nas spec requirements
+cd apps/frontend
+
+# Instalar Tailwind CSS
+npx tailwindcss init -p
+
+# Instalar DaisyUI e suas dependências
+npm install -D daisyui@latest
 ```
 
-### 5. Iniciar ambiente de desenvolvimento
+Configurar `tailwind.config.ts`:
+```js
+import daisyui from 'daisyui'
+
+export default {
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
+  theme: { extend: {} },
+  plugins: [daisyui],
+}
+```
+
+### 5. Gerar Design System (MCP Stitch)
+
+```bash
+# Usar MCP Stitch para gerar design system
+# O Stitch MCP cria o design system baseado nas spec requirements
+# Componentes são exportados para uso com Tailwind + shadcn/ui
+```
+
+### 6. Iniciar ambiente de desenvolvimento
 
 ```bash
 # Ambos backend e frontend
@@ -112,7 +134,8 @@ apps/
     │   ├── page.tsx     # Landpage
     │   ├── categorias/[id]/
     │   └── admin/
-    ├── components/      # Componentes UI
+    ├── components/      # Componentes UI (shadcn/ui + custom)
+    ├── lib/             # Utils, API client
     └── e2e/             # Testes Playwright
 ```
 

@@ -14,15 +14,15 @@ Website to showcase artisan products with:
 ## Technical Context
 
 **Language/Version**: TypeScript (full-stack)  
-**Primary Dependencies**: NestJS (backend), Next.js (frontend), Prisma ORM, Playwright MCP  
-**Storage**: PostgreSQL (data) + cloud image repository (images)  
+**Primary Dependencies**: NestJS (backend), Next.js (frontend), Prisma ORM, Playwright MCP, Stitch MCP, Tailwind CSS, DaisyUI (free component library)  
+**Storage**: PostgreSQL (data) + filesystem image storage (local structured folders)  
 **Testing**: NestJS built-in testing, Playwright MCP for E2E  
 **Target Platform**: Web browser (desktop/mobile responsive)  
 **Project Type**: Full-stack web application (monorepo)  
 **Performance Goals**: Page load ≤3s, Lighthouse 90+  
 **Constraints**: Bundle size ≤250KB gzipped, WCAG 2.1 AA accessibility  
 **Scale/Scope**: Single admin user, small product catalog (<500 items)  
-**Design System**: MCP Stitch for UI/UX design generation
+**Design System**: MCP Stitch for UI/UX design generation, Tailwind CSS for styling, DaisyUI (free, customizable components)
 
 ## Constitution Check
 
@@ -30,7 +30,7 @@ Website to showcase artisan products with:
 
 Per the Artesanato Constitution, all plans MUST satisfy:
 
-- **Beleza & UX** (Principle I): ✅ Floating carousel effect with smooth transitions; responsive product cards; WhatsApp last in marketplace selector; MCP Stitch for design system
+- **Beleza & UX** (Principle I): ✅ Floating carousel effect with smooth transitions; responsive product cards; WhatsApp last in marketplace selector; MCP Stitch for design system; Tailwind CSS + DaisyUI for consistent, beautiful UI
 - **Desempenho** (Principle II): ✅ Static pages served; dynamic content loaded via API; image lazy-loading strategy defined
 - **Automacao de Testes** (Principle III): ✅ NestJS testing utilities; Playwright MCP E2E coverage for critical flows
 - **Codigo Limpo** (Principle IV): ✅ NestJS module-based architecture; Next.js App Router structure; no excessive complexity
@@ -57,37 +57,36 @@ specs/001-artisan-showcase/
 apps/
 ├── backend/                     # NestJS API
 │   ├── src/
-│   │   ├── categoras/          # Categoria module
-│   │   ├── produtos/           # Produto module
-│   │   ├── administradores/     # Administrador module
+│   │   ├── categorias/          # Categoria module
+│   │   ├── produtos/            # Produto module
+│   │   ├── administradores/      # Administrador module
 │   │   ├── auth/               # Authentication module
 │   │   ├── upload/             # Image upload module
-│   │   └── common/             # Shared utilities, filters, guards
-│   ├── test/
-│   └── package.json
-│
+│   │   └── common/             # Shared utilities, guards, filters
+│   └── test/
+
 └── frontend/                    # Next.js App
     ├── app/                    # App Router pages
     │   ├── page.tsx            # Landpage com carrosel
-    │   ├── categorias/[id]/   # Página de categoria
+    │   ├── categorias/[id]/    # Página de categoria
     │   └── admin/              # Área gerencial (CRUD)
     ├── components/             # Reusable UI components
     ├── lib/                    # API client, utils
-    └── package.json
+    └── e2e/                    # Playwright E2E tests
 
 packages/
 └── shared/                      # Shared types and contracts
 ```
 
-**Structure Decision**: Monorepo with separate apps (backend/frontend). NestJS handles REST API with PostgreSQL via Prisma. Next.js App Router renders pages dynamically from API data. MCP Stitch generates UI components based on design system. Admin area protected by session-based authentication via NestJS Auth module.
+**Structure Decision**: Monorepo with separate apps (backend/frontend). NestJS handles REST API with PostgreSQL via Prisma. Next.js App Router renders pages dynamically from API data. Tailwind CSS + DaisyUI provides beautiful, accessible components. MCP Stitch generates design system tokens. Admin area protected by session-based authentication via NestJS Auth module.
 
 ## Complexity Tracking
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|---------------------------------------|
+|-----------|------------|-------------------------------------|
 | NestJS vs Express | Structured module system, dependency injection, built-in testing, guards/filters | Express is less opinionated; NestJS provides consistency for larger feature set |
 | Monorepo structure | Shared types between frontend/backend; unified tooling | Separate repos add coordination overhead for small project |
-| Cloud image storage | Images must be accessible via URL; local storage doesn't scale | [N/A - no simpler alternative sufficient] |
+| Cloud image storage (v1) | FileSystem chosen for simplicity; can migrate to S3/Cloudinary later | Cloud storage adds complexity for initial development |
 
 ## Phase 0: Research Required
 

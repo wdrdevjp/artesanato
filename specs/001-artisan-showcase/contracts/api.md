@@ -69,7 +69,7 @@ GET /categorias
     {
       "id": "uuid",
       "nome": "Cerâmica",
-      "imagem": "https://storage.example.com/categoria-ceramica.jpg",
+      "imagem": "/uploads/categorias/abc123hash.jpg",
       "createdAt": "2026-04-13T10:00:00Z",
       "updatedAt": "2026-04-13T10:00:00Z"
     }
@@ -90,7 +90,7 @@ GET /categorias/:id
   "categoria": {
     "id": "uuid",
     "nome": "Cerâmica",
-    "imagem": "https://storage.example.com/categoria-ceramica.jpg",
+    "imagem": "/uploads/categorias/abc123hash.jpg",
     "createdAt": "2026-04-13T10:00:00Z",
     "updatedAt": "2026-04-13T10:00:00Z"
   }
@@ -107,7 +107,7 @@ POST /categorias
 ```json
 {
   "nome": "Cerâmica",
-  "imagem": "https://storage.example.com/categoria-ceramica.jpg"
+  "imagem": "/uploads/categorias/abc123hash.jpg"
 }
 ```
 
@@ -129,7 +129,7 @@ PUT /categorias/:id
 ```json
 {
   "nome": "Cerâmica Atualizada",
-  "imagem": "https://storage.example.com/nova-imagem.jpg"
+  "imagem": "/uploads/categorias/newhash.jpg"
 }
 ```
 
@@ -183,8 +183,8 @@ GET /categorias/:categoriaId/produtos
       "descricao": "Vaso decorativo pintado à mão",
       "preco": 89.90,
       "imagens": [
-        "https://storage.example.com/vaso-1.jpg",
-        "https://storage.example.com/vaso-2.jpg"
+        "/uploads/produtos/hash1.jpg",
+        "/uploads/produtos/hash2.jpg"
       ],
       "linkWhatsApp": "https://wa.me/5511999999999",
       "marketplaceLinks": [
@@ -225,7 +225,7 @@ POST /produtos
   "nome": "Vaso de Cerâmica",
   "descricao": "Vaso decorativo pintado à mão",
   "preco": 89.90,
-  "imagens": ["url1", "url2"],
+  "imagens": ["/uploads/produtos/hash1.jpg", "/uploads/produtos/hash2.jpg"],
   "linkWhatsApp": "https://wa.me/5511999999999",
   "marketplaceLinks": [
     { "tipo": "Shopee", "url": "https://shopee.com/produto/123" }
@@ -279,14 +279,26 @@ POST /upload
 Content-Type: multipart/form-data
 ```
 
-**Form Field:** `imagem` (file)
+**Form Fields:**
+- `imagem` (file) - Arquivo de imagem
+- `tipo` (string) - "categoria" ou "produto" (determina a pasta de destino)
 
 **Response 200:**
 ```json
 {
   "success": true,
-  "url": "https://storage.example.com/uploads/uuid.jpg"
+  "path": "/uploads/categorias/abc123hash.jpg"
 }
+```
+
+**Estrutura de Pastas:**
+```
+uploads/
+├── categorias/
+│   └── {hash}.{ext}
+└── produtos/
+    └── {hash}.{ext}
+```
 ```
 
 ---

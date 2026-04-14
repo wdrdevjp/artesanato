@@ -35,19 +35,21 @@
 
 ---
 
-## Decision 3: Image Upload Flow
+## Decision 3: Image Storage (v1)
 
-**Decision**: NestJS backend proxy upload to cloud storage
+**Decision**: Local filesystem with structured folders
 
 **Rationale**:
-- Backend can validate file types and sizes before upload
-- Environment credentials stay secure on server
-- Simpler CORS configuration
-- Admin uploads via multipart form directly to NestJS controller
+- Simple to implement and debug during initial development
+- No external service dependencies or credentials
+- Images stored with hash-based names for deduplication
+- Structured folders: `/uploads/categorias/{hash}.{ext}` and `/uploads/produtos/{hash}.{ext}`
+- Database stores the path/URL reference
+- Can migrate to S3/Cloudinary later without changing the API contract
 
 **Alternatives considered**:
-- Direct upload to S3 (pre-signed URLs): More complex, requires additional AWS SDK setup
-- Cloudinary direct upload: Vendor lock-in, but excellent transformation API
+- S3/Cloudinary: Adds external dependency and complexity; deferred to future phase
+- Base64 in database: Not recommended for performance and storage costs
 
 ---
 
@@ -102,13 +104,19 @@
 
 ## Decision 7: Design System
 
-**Decision**: MCP Stitch for design generation
+**Decision**: MCP Stitch for design generation + Tailwind CSS + DaisyUI
 
 **Rationale**:
-- AI-powered design system generation
-- Consistent theming across components
-- Export to Next.js compatible formats
-- Integrates with project design tokens
+- MCP Stitch provides AI-powered design system generation
+- Tailwind CSS enables rapid, consistent styling with utility-first approach
+- DaisyUI provides free, lightweight, customizable components that work seamlessly with Tailwind
+- All three integrate well together and support custom theming
+- DaisyUI is themeable and provides beautiful components out of the box
+
+**Alternatives considered**:
+- shadcn/ui: Good but React-only; DaisyUI works with any Tailwind setup
+- Material UI: Heavier, less customizable, requires complex theming
+- Chakra UI: Good but more opinionated, less performant
 
 ---
 
@@ -119,7 +127,7 @@
 | Frontend | Next.js (App Router) | SSR for performance, image optimization, MCP Stitch compatible |
 | Backend | NestJS | Module architecture, DI, built-in testing, guards/filters |
 | Database | PostgreSQL + Prisma | Type-safe, migrations, persistence |
-| Images | Cloud storage (S3/Cloudinary) | Scalable, accessible via URL |
+| Images | FileSystem (local) v1 | Simple, debuggable, hash-based naming; S3/Cloudinary deferred |
 | Auth | Session-based (NestJS Passport) | Secure, simple, fits single-admin |
 | Testing | NestJS Jest + Playwright MCP | Unit/integration + AI-assisted E2E |
-| Design | MCP Stitch | AI-powered design system generation |
+| Design | MCP Stitch + Tailwind CSS + DaisyUI | AI-powered design, utility-first CSS, free lightweight components |

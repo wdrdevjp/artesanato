@@ -8,7 +8,7 @@
 |-------|------|-----------|------------|
 | id | UUID | Identificador único | PK, auto-generated |
 | nome | String | Nome da categoria | Required, max 100 chars |
-| imagem | String (URL) | URL da imagem da categoria | Required, valid URL format |
+| imagem | String | Path da imagem no filesystem (ex: /uploads/categorias/hash.jpg) | Required |
 | createdAt | DateTime | Data de criação | Auto-generated |
 | updatedAt | DateTime | Data de atualização | Auto-updated |
 
@@ -25,7 +25,7 @@
 | nome | String | Nome do produto | Required, max 200 chars |
 | descricao | String | Descrição breve | Required, max 500 chars |
 | preco | Decimal | Preço do produto | Required, >= 0 |
-| imagens | String[] (URLs) | Array de URLs das imagens | Required, min 1 image |
+| imagens | String[] | Array de paths das imagens no filesystem (ex: /uploads/produtos/hash.jpg) | Required, min 1 image |
 | linkWhatsApp | String (URL) | Link do WhatsApp | Required, valid URL format |
 | createdAt | DateTime | Data de criação | Auto-generated |
 | updatedAt | DateTime | Data de atualização | Auto-updated |
@@ -87,7 +87,7 @@
 ### Categoria
 - Nome não pode estar vazio
 - Nome deve ter no máximo 100 caracteres
-- Imagem deve ser uma URL válida
+- Imagem deve ser um path válido dentro de /uploads/categorias/
 
 ### Produto
 - Nome não pode estar vazio
@@ -95,7 +95,7 @@
 - Descrição não pode estar vazia
 - Descrição deve ter no máximo 500 caracteres
 - Preço deve ser maior ou igual a zero
-- Deve ter pelo menos uma imagem
+- Deve ter pelo menos uma imagem (path em /uploads/produtos/)
 - linkWhatsApp é obrigatório
 
 ### MarketplaceLink
