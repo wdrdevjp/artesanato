@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell:*)",
+      "Bash(dir \"D:\\\\Ambiente\\\\workspace-projetos\\\\artesanato\")",
+      "Bash(git -C \"D:\\\\Ambiente\\\\workspace-projetos\\\\artesanato\" rev-parse --git-dir)"
+    ]
+  }
+}

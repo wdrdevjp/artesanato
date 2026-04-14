@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Categoria {
+  id        String   @id @default(uuid())
+  nome      String
+  imagem    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  produtos  Produto[]
+
+  @@index([createdAt])
+}
+
+model Produto {
+  id          String   @id @default(uuid())
+  categoriaId String
+  nome        String
+  descricao   String
+  preco       Decimal
+  imagens     String[]
+  linkWhatsApp String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  categoria  Categoria @relation(fields: [categoriaId], references: [id])
+  marketplaceLinks MarketplaceLink[]
+
+  @@index([categoriaId])
+  @@index([createdAt])
+}
+
+model MarketplaceLink {
+  id        String   @id @default(uuid())
+  produtoId String
+  tipo      EnumMarketplaceType
+  url       String
+  createdAt DateTime @default(now())
+  produto   Produto @relation(fields: [produtoId], references: [id], onDelete: Cascade)
+
+  @@index([produtoId])
+}
+
+model Administrador {
+  id        String   @id @default(uuid())
+  nome      String
+  email     String   @unique
+  senha     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum EnumMarketplaceType {
+  Shopee
+  MercadoLivre
+}
