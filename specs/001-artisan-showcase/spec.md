@@ -5,6 +5,16 @@
 **Status**: Draft
 **Input**: User description: "Crie um site para expor produtos de artesanatos de fabricação própria..."
 
+## Clarifications
+
+### Session 2026-04-13
+
+- Q: Categoria deletion behavior → A: Block deletion - categorias com produtos não podem ser excluídas (devem primeiro remover os produtos)
+- Q: Authentication method for admin area → A: Simple login form with email/password stored in localStorage/JSON file
+- Q: Carousel transition interval → A: 3 seconds auto + manual navigation
+- Q: Missing marketplace link behavior → A: WhatsApp link always present as last option; marketplaces (Shopee, Mercado Livre) appear first when configured
+- Q: Data persistence storage → A: PostgreSQL for data; images in cloud repository (S3, Cloudinary, etc.)
+
 ## User Scenarios & Testing
 
 ### User Story 1 - Visualizar Categorias na Landpage (Priority: P1)
@@ -34,7 +44,7 @@ O visitante seleciona uma categoria e visualiza todos os produtos daquela catego
 
 1. **Given** o visitante está na página de uma categoria, **When** existem produtos, **Then** os produtos são exibidos como cards com imagens, descrição e preço
 2. **Given** o visitante está visualizando um card de produto com múltiplas imagens, **When** o card é exibido, **Then** as imagens alternam automaticamente em intervalos regulares
-3. **Given** o visitante está visualizando um card de produto, **When** clica no seletor de marketplace, **Then** abre o marketplace selecionado (Shopee ou Mercado Livre) na página do produto
+3. **Given** o visitante está visualizando um card de produto, **When** clica no seletor de marketplace, **Then** abre a opção selecionada (Shopee, Mercado Livre ou WhatsApp) na página do produto, sendo WhatsApp sempre a última opção disponível
 
 ---
 
@@ -83,17 +93,17 @@ O administrador acessa a área gerencial e pode criar, visualizar, atualizar e e
 
 ### Functional Requirements
 
-- **FR-001**: O sistema DEVE exibir na landpage um carrosel de imagens representando categorias, onde a imagem atual aparece maior e em destaque na frente, e imagens anteriores aparecem menores e atrás (efeito de sobreposição flutuante)
+- **FR-001**: O sistema DEVE exibir na landpage um carrosel de imagens representando categorias, onde a imagem atual aparece maior e em destaque na frente, e imagens anteriores aparecem menores e atrás (efeito de sobreposição flutuante), com transição automática a cada 3 segundos e navegação manual disponível
 - **FR-002**: O sistema DEVE permitir navegação para a página de categoria ao clicar em uma imagem do carrosel
 - **FR-003**: O sistema DEVE exibir cards de produtos na página de categoria, cada card contendo: imagens (com alternância automática para múltiplas), descrição breve e preço
 - **FR-004**: O sistema DEVE permitir alternância automática de imagens em cards de produtos que possuem mais de uma imagem
-- **FR-005**: O sistema DEVE incluir em cada card de produto um seletor dropdown com opções de marketplace (Shopee, Mercado Livre)
+- **FR-005**: O sistema DEVE incluir em cada card de produto um seletor dropdown com opções de marketplace (Shopee, Mercado Livre) quando disponíveis, seguido sempre pelo link do WhatsApp como última opção
 - **FR-006**: O sistema DEVE abrir o link do marketplace na mesma aba do navegador ao selecionar uma opção
-- **FR-007**: O sistema DEVE ter uma área gerencial protegida por autenticação para administradores
-- **FR-008**: O sistema DEVE permitir CRUD completo de categorias na área gerencial (criar, ler, atualizar, excluir)
+- **FR-007**: O sistema DEVE ter uma área gerencial protegida por autenticação via formulário login (email/senha armazenados no PostgreSQL)
+- **FR-008**: O sistema DEVE permitir CRUD completo de categorias na área gerencial (criar, ler, atualizar, excluir), porém categorias que contêm produtos não podem ser excluídas (exclusão bloqueada até que todos os produtos sejam removidos)
 - **FR-009**: O sistema DEVE permitir CRUD completo de produtos na área gerencial (criar, ler, atualizar, excluir)
 - **FR-010**: O sistema DEVE permitir associar múltiplas imagens a um produto
-- **FR-011**: O sistema DEVE permitir associar links de marketplace (Shopee, Mercado Livre) a cada produto
+- **FR-011**: O sistema DEVE permitir associar links de marketplace (Shopee, Mercado Livre) e WhatsApp a cada produto, sendo WhatsApp obrigatório e sempre posicionado por último no seletor
 - **FR-012**: Todas as páginas do site DEVEM ser montadas dinamicamente a partir dos dados cadastrados
 
 ### Constitution-Derived Requirements
@@ -111,8 +121,8 @@ Per the Artesanato Constitution, all features MUST also satisfy:
 ### Key Entities
 
 - **Categoria**: Representa uma categoria de produtos de artesanato. Atributos: id, nome, imagem (URL), data de criação, data de atualização.
-- **Produto**: Representa um item de artesanato. Atributos: id, idCategoria, nome, descricao, preco, imagens (array de URLs), linksMarketplace (array de {tipo: Shopee|MercadoLivre, url}), data de criação, data de atualização.
-- **Administrador**: Representa o usuário com acesso à área gerencial. Atributos: id, nome, email, senha (hash).
+- **Produto**: Representa um item de artesanato. Atributos: id, idCategoria, nome, descricao, preco, imagens (array de URLs), linksMarketplace (array de {tipo: Shopee|MercadoLivre, url}), linkWhatsApp (URL - obrigatório), data de criação, data de atualização.
+- **Administrador**: Representa o usuário com acesso à área gerencial. Atributos: id, nome, email, senha (armazenada no PostgreSQL).
 
 ## Success Criteria
 
@@ -131,6 +141,6 @@ Per the Artesanato Constitution, all features MUST also satisfy:
 - Os administradores são os únicos que acessam a área gerencial; visitantes têm apenas acesso de leitura
 - Não haverá integração de pagamento ou carrinho de compras; o site é apenas expositor
 - Links de marketplace são URLs externas fornecidas pelo administrador
-- Imagens são armazenadas via URL (provavelmente serviços de armazenamento em nuvem)
-- Autenticação na área gerencial utiliza email e senha (credenciais locally stored ou banco de dados)
+- Imagens são armazenadas em repositório de imagens (ex: S3, Cloudinary) e acessadas via URL
+- Autenticação na área gerencial utiliza email e senha armazenados no PostgreSQL
 - Sistema não requer multi-idioma; apenas português brasileiro
